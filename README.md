@@ -1,87 +1,117 @@
-# TECHIN_sudormrf
+# MySavings — Personal Budget & Savings Tracker
 
-Baigiamasis projektas, tobulinama fork, ŽIŪRĖTI Dev ŠAKĄ! (FOR NOW, REVIEW ONLY Dev branch, nor main)
+> A full-stack web app for tracking income, expenses, and savings goals — built as part of a team capstone project, with this fork focused on my own continued development and improvements.
 
-## Setup prieš paleidžiant projektą
+**Status:** Work in progress (v0.1) · **Branch to review:** `dev` (not `main`)
 
-- #### Įsirašyti .NET 10 SDK
+## About the project
 
-    https://dotnet.microsoft.com/en-us/download
+MySavings helps users manage their personal finances by tracking income and expenses and setting savings goals. Users can allocate money to different categories, log expenses against a planned budget, and see their overall balance and progress in real time through charts and progress cards.
 
-- #### Įsirašyti React projekto dependencies
+This started as a team capstone project. This fork is where I continue developing and refining it independently — see the [My contribution](#my-contribution) section below for what's specifically mine.
 
-    *\*leidžiama iš ./frontend/ direktorijos*
-    ```
-    npm install
-    ```
+## Features
 
-## Projekto paleidimas
+**Implemented**
+- User registration and login/logout (email + password)
+- Add, edit, and delete a savings amount, with portions allocated toward specific goals
+- Create, edit, and delete savings goals, each with:
+  - Name, target amount, target date and allocated amount
+- Savings dashboard: monthly summaries with charts, total amount allocated to goals, goals completed vs. remaining, and per-goal progress cards (amount saved, time left)
+- Filter goals by status, date, or name; sort by most recent, deadline, progress, amount saved, or alphabetically
+- Event log (backend) recording actions with timestamp and related data
+- Automated backend unit tests
 
-#### 1. Duomenų bazės docker konteinerio sukūrimo komanda
+**Planned / not yet implemented**
+- Admin role: manage users and expense categories, view the full event log (by user/action)
+- Income entry as a standalone amount, to calculate how much of it can realistically go to savings
 
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Backend | C#, .NET 10 |
+| Frontend | React 19 |
+| Database | MySQL |
+| Logging | Serilog + Seq |
+| Auth | JWT |
+| Testing | xUnit (`dotnet test`) |
+
+## My contribution
+
+I worked across the full stack on this project — frontend, backend, and database design.
+
+Frontend — my strongest area, and where I took primary ownership of code quality overall. Beyond building out core features, I led the final styling pass to match the Figma designs and implemented accessibility (a11y) improvements.
+
+Backend — contributed significantly to authentication and authorization, and built out entities along with their related layers (repositories, services, etc.).
+
+Database — designed the initial database schema at the start of the project. This gave the whole team a clear picture of how data flows through the app and where it could be extended later on.
+
+Working on this project touched nearly every skill I've learned so far, end to end — which made it both challenging and one of the most rewarding parts of the course.
+
+## Getting started
+
+### Prerequisites
+- [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download)
+- Node.js + npm
+- Docker (for MySQL and Seq)
+
+### 1. Install frontend dependencies
+Run from `./frontend/`:
+```bash
+npm install
 ```
+
+### 2. Start the database (Docker)
+```bash
 docker run --name MySavings -e MYSQL_ROOT_PASSWORD=root -d -p 3306:3306 mysql:lts
 ```
 
-#### 2. API projekto paleidimas
-
-*\*leidžiama iš ./backend/MySavings.API/ direktorijos*
-```
-dotnet run
-```
-
-#### 3. React projekto paleidimas
-
-*\*leidžiama iš ./frontend/ direktorijos*
-```
-npm run dev
-```git
-
-#### 4. Seq (logging) docker konteinerio sukūrimo komanda
-
-```
-docker run -d --name seq -p 5341:5341 -p 8081:80 -e ACCEPT_EULA=Y -e SEQ_FIRSTRUN_NOAUTHENTICATION=True datalust/seq:latest
-
-
-```
-
-### DB migracijos komandos
-
-#### Migracijų atnaujinimas rankiniu būdu
-
-```
+### 3. Apply database migrations
+Run from the project root:
+```bash
 dotnet ef database update
 ```
 
-#### Migracijos pridėjimas
-
-*\*leidžiama iš projekto root direktorijos*  
-*\*Čia pavyzdys. Kuriant naują migraciją reikia pakeisti pavadinimą*
+### 4. Start the API
+Run from `./backend/MySavings.API/`:
+```bash
+dotnet run
 ```
+
+### 5. Start the frontend
+Run from `./frontend/`:
+```bash
+npm run dev
+```
+
+### 6. (Optional) Start Seq for logging
+```bash
+docker run -d --name seq -p 5341:5341 -p 8081:80 -e ACCEPT_EULA=Y -e SEQ_FIRSTRUN_NOAUTHENTICATION=True datalust/seq:latest
+```
+Logs are then viewable at [http://localhost:8081](http://localhost:8081).
+
+## Database migrations
+
+Create a new migration (run from project root):
+```bash
 dotnet ef migrations add UpdateUserTable -p ./backend/MySavings.Data/ -s ./backend/MySavings.API/
 ```
 
-### Swagger nuoroda
+## Running tests
 
-http://localhost:5141/swagger/index.html
-
-
-### JWT debugger (skaityti JWT tokenams)
-
-https://jwt.io
-
-
-### Postman (tikrinti autorizavimui)
-
-https://www.postman.com/downloads/
-
-### Serilog (logų serveris)
-http://localhost:8081/
-
-
-### Unit test paleidimas
-
-*\*leidžiama iš ./backend/MysSavings.Services.Tests direktorijos*
-```
+Run from `./backend/MySavings.Services.Tests/`:
+```bash
 dotnet test
 ```
+
+## Useful links
+- [JWT debugger](https://jwt.io) — inspect JWT tokens
+- Seq (local logging UI): http://localhost:8081
+
+## Non-functional notes
+- All actions are expected to respond in under 2 seconds, assuming up to ~1000 expense records.
+- All backend actions are recorded in an event log with a timestamp and relevant context.
+
+---
+*Originally built as a team capstone project; this repository is my personal fork where I continue development.*
