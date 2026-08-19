@@ -1,6 +1,6 @@
 # TECHIN_sudormrf
 
-Baigiamasis projektas
+Baigiamasis projektas, tobulinama fork, ŽIŪRĖTI Dev ŠAKĄ! (FOR NOW, REVIEW ONLY Dev branch, nor main)
 
 ## Setup prieš paleidžiant projektą
 
