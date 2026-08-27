@@ -10,6 +10,13 @@ MySavings helps users manage their personal finances by tracking income and expe
 
 This started as a team capstone project. This fork is where I continue developing and refining it independently — see the [My contribution](#my-contribution) section below for what's specifically mine.
 
+## Screenshots
+![Sign-in](screenshots/sign-in.png)
+![Main Dashboard](screenshots/laptop-main-dashboard.png)
+![Goal Cards](screenshots/laptop-goal-grid.png)
+![Goal Cards Details](screenshots/laptop-goal-details.png)
+![Mobile view](screenshots/mobile-main-dashboard.png)
+
 ## Features
 
 **Implemented**
